@@ -212,6 +212,14 @@ class AutocompletePrompt extends Base {
       if (this.currentChoices.getChoice(this.selected)) {
         this.rl.write(ansiEscapes.cursorLeft);
         var autoCompleted = this.currentChoices.getChoice(this.selected).value;
+
+        // custom auto complete behaviour
+        if (this.rl.line.includes(',')) {
+          var idxOfLastComma = this.rl.line.lastIndexOf(',')  
+          var oldInput = this.rl.line.slice(0, idxOfLastComma+1)
+          autoCompleted = oldInput + autoCompleted
+        }
+
         this.rl.write(ansiEscapes.cursorForward(autoCompleted.length));
         this.rl.line = autoCompleted;
         this.render();
